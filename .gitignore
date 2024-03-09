@@ -7,3 +7,4 @@
 .env
 docker/volume/mysql
 docker/volume/pgdata
+docker/volume/*

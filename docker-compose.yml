@@ -36,5 +36,5 @@ services:
     env_file:
       - ./src/.env
     volumes:
-      - ./docker/volume/pgdata:/var/lib/postgresql/data
+      - ./db:/var/lib/postgresql/data
 
