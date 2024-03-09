@@ -14,26 +14,30 @@ services:
   app:
     container_name: app
     depends_on:
-      - mysql
+      - db
     build:
       dockerfile: ./docker/php/Dockerfile
     volumes:
       - ./src:/var/www
-  phpmyadmin:
-    container_name: phpmyadmin
-    image: phpmyadmin/phpmyadmin
-    ports:
-      - 9090:80
+  pgadmin:
+    image: dpage/pgadmin4:7.8
+    restart: always
     environment:
-      PMA_HOST: mysql
-      PMA_PORT: 3306
-  mysql:
-    container_name: mysql
-    image: mysql:8
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD}
     ports:
-      - 3306:3306
+      - "8081:80"
+  db:
+    container_name: db
+    image: postgres:15.4-alpine3.18
+    ports:
+      - "5432:5432"
+    restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: root
+      POSTGRES_DB: ${DB_DATABASE}
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      PGDATA: "/var/lib/postgresql/data/pgdata"
     volumes:
-      - ./docker/volume/mysql:/var/lib/mysql
+      - ./docker/volume/pgdata:/var/lib/postgresql/data
 
